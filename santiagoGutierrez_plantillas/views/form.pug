@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Agregar producto
+    body 
+        form(action="/api/productos", method="POST") 
+            label(for="title") Nombre del producto 
+            input(type="text", name="title", value="")
+            label(for="price") Precio del producto 
+            input(type="number", name="price", value=1, min=0)
+            label(for="thumbnail") Imagen del producto 
+            input(type="text", name="thumbnail", value="")
+            input(type="submit", value="Enviar Datos")
+        a(href="/api/productos") Ver Productos
+<!--El form no envía correctamente los datos al POST, por lo que fue testeado con postman-->
