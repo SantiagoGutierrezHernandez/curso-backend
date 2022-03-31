@@ -1,0 +1,11 @@
+.msg-user-mail{
+    color:blue;
+    font-weight: bold;
+}
+.msg-time{
+    color:brown;
+}
+.msg-user-msg{
+    color:green;
+    font-style: italic;
+}
