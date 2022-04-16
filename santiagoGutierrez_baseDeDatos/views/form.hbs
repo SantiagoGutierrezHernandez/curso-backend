@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/form.css">
+    <title>Agregar producto</title>
+</head>
+<body>
+    <form action="/api/productos" method="post">
+        <label for="title">Nombre del producto</label>
+        <input type="text" name="title">
+        <label for="price">Precio del producto</label>
+        <input type="number" name="price" min="0">
+        <label for="thumbnail">Imagen del producto</label>
+        <input type="text" name="thumbnail">
+        <input type="submit" value="Enviar Datos">
+        <a href="/api/productos">Ver productos</a>
+    </form>
+
+    <section id="message-container">
+        {{#each messages}}
+        <div>
+            <span class="msg-user-mail">{{this.data.user}}</span>
+            <span class="msg-time">- [{{this.data.datetime}}] :</span>
+            <span class="msg-user-msg">{{this.data.msg}}</span>
+        </div>
+        {{/each}}
+    </section>
+    <form id="message-form" action="">
+        <label for="mail">Mail</label>
+        <input id="message-mail" type="text" name="mail">
+        <label for="message">Mensaje</label>
+        <input id="message-msg" type="text" name="message">
+        <input type="submit" id="message-button" value="Enviar mensaje"></input>
+    </form>
+    
+    <script src="/socket.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/form.js"></script>
+</body>
+</html>
