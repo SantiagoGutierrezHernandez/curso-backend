@@ -124,15 +124,15 @@ ROUTER_CARRITO.post("/:id/productos", (req, res)=>{
 })
 ROUTER_CARRITO.delete("/:id/productos/:id_prod", (req, res)=>{
     try{
-        const CART_ID = req.params.id
-        const PRODUCT_ID = req.params.id_prod
+        const CART_ID = parseInt(req.params.id)
+        const PRODUCT_ID = parseInt(req.params.id_prod)
         CART.callbackAtId(CART_ID, (item)=>{
             const NEW_PRODUCTS = []
             let deleted = false
             //El id puede no ser el mismo que el indice, por lo que en vez de hacer un splice iteramos y reemplazamos
             for (const product of item.products) {
                 if(product.id !== PRODUCT_ID)
-                    NEW_PRODUCTS.push(product)
+                NEW_PRODUCTS.push(product)
                 else deleted = true
             }
             if(!deleted) throw new Error(`Couldn't find product id ${PRODUCT_ID} in array ${item.products}.`)
