@@ -1,1 +1,0 @@
-[{"title":"nombre","price":2,"thumbnail":"img.png","id":2},{"title":"nombre","price":2,"thumbnail":"img.png","id":3},{"title":"nombre","price":2,"thumbnail":"img.png","id":4},{"title":"nombre","price":2,"thumbnail":"img.png","id":5},{"title":"nombre","price":2,"thumbnail":"img.png","id":6}]
