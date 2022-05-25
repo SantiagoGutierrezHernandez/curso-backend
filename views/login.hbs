@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Conectarse</title>
+</head>
+<body>
+    <h1>Conectarse</h1>
+    <form action="/api/login" method="post">
+        <label for="username">Nombre de usuario</label>
+        <input id="chat-form-username" type="text" name="username">
+        <label for="password">Contraseña</label>
+        <input id="chat-form-password" type="password" name="password">
+        <input type="submit" id="login-button" value="Registrarse"></input>
+    </form>
+    <a href="/api/signup">No tengo una cuenta</a>
+</body>
+</html>
