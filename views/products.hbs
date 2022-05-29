@@ -22,30 +22,16 @@
         {{/each}}
     </ul>
 
-    <section id="chat-user">
-        {{#if username}}
-            <div id="chat-welcome">
-                <h4 id="chat-welcome-title" data-username={{username}}>Bienvenido {{username}}</h4>
-                <button><a href="/api/logout">Logout</a></button>
-            </div>
-        {{else}}
-            <p>No estás conectado. Conectate para chatear!</p>
-            <a href="/api/login">Conectarme</a>
-            <br>
-            <a href="/api/register">No tengo una cuenta</a>
-        {{/if}}
-    </section>
     <section id="message-container">
         <div id="compression">Compresion: </div>
     </section>
-    {{#if username}}
-        <form id="message-form" action="">
-            <input id="message-mail" type="text" name="mail" value={{username}} style="display:none;">
-            <label for="message">Mensaje</label>
-            <input id="message-msg" type="text" name="message">
-            <input type="submit" id="message-button" value="Enviar mensaje"></input>
-        </form>
-    {{/if}}
+    <form id="message-form" action="">
+        <label for="mail">Mail</label>
+        <input id="message-mail" type="text" name="mail">
+        <label for="message">Mensaje</label>
+        <input id="message-msg" type="text" name="message">
+        <input type="submit" id="message-button" value="Enviar mensaje"></input>
+    </form>
 
     <script async=false defer=false src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>

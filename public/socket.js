@@ -1,7 +1,22 @@
 const socket = io()
 
+function getCompressionPercentage(oldNum, newNum){
+    let diff = oldNum - newNum
+    return (diff/oldNum)*100
+}
+
 socket.on("load-messages", data =>{
-    const messages = data.messages //normalizr.denormalize(data.messages.result, data.schema, data.messages.entities)
+    /* La denormalización no está funcionando correctamente por lo que lo hacemos manualmente
+    const messages = normalizr.denormalize(data.messages.result, data.schema, data.messages.entities)*/
+
+    let messages = []
+    for(const key in data.messages.entities.messages){
+        const message = data.messages.entities.messages[key]
+        messages.push({
+            author: data.messages.entities.authors[message.author],
+            msg: message.msg
+        })
+    }
 
     for (const i of messages) {
         const div = document.createElement("div")
@@ -15,6 +30,5 @@ socket.on("load-messages", data =>{
         document.getElementById("message-container").appendChild(div)
     }
     
-    console.log(`${JSON.stringify(data.messages).length} / ${JSON.stringify(messages).length} = ${JSON.stringify(data.messages).length/ JSON.stringify(messages).length}`)
-    document.getElementById("compression").innerText = `Compresión:${parseInt(JSON.stringify(data.messages).length/ JSON.stringify(messages).length * 100)}%`
+    document.getElementById("compression").innerText = `Compresión:${getCompressionPercentage(JSON.stringify(messages).length, parseInt(JSON.stringify(data.messages.entities).length))}%`
 })
