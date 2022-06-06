@@ -13,12 +13,14 @@ const bCrypt = require("bcrypt")
 const BODY_PARSER = require("body-parser")
 const COOKIE_PARSER = require('cookie-parser')
 const MONGO_STORE = require("connect-mongo")
+const {mongoStoreUrl} = require("./options/config")
 
-/*const normalizr = require("normalizr")
-const messageSchema = require("./options/normalizrSchema").messagesSchema
-const util = require("util")*/
+const {fork} = require("child_process")
+const YARGS = require("yargs/yargs") (process.argv.slice(2))
+const ARGS = YARGS.default({
+    port : 8080
+}).argv
 
-const PORT = 8080
 const APP = EXPRESS()
 
 /*AUTENTICACION*/
@@ -135,7 +137,7 @@ APP.use(SESSION({
     }
     ,
     store: MONGO_STORE.create({
-        mongoUrl: "mongodb+srv://santigutih:0303456@cluster0.ha8lo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+        mongoUrl: mongoStoreUrl,
         mongoOptions: {useNewUrlParser:true, useUnifiedTopology:true}
     })
 }))
@@ -239,8 +241,32 @@ ROUTER_PRODUCTOS.get("/productos-test", (req,res)=>{
 
 APP.use('/api/productos', ROUTER_PRODUCTOS)
 
+const ROUTER_DEV = Router()
+
+ROUTER_DEV.get("/info", (req, res)=>{
+    res.json({
+        argv: process.argv,
+        os : process.platform,
+        nodeVersion : process.version,
+        memory : process.memoryUsage(),
+        path : __filename,
+        pid : process.pid,
+        dir : process.cwd()
+    })
+})
+ROUTER_DEV.get("/randoms", (req,res)=>{
+    const AMOUNT = req.query.amount || 100000000
+    const child = fork("./js/randomNums.js")
+    child.send(AMOUNT)
+    child.on("message", msg => {
+        res.json(msg)
+    })
+})
+
+APP.use("/api-dev", ROUTER_DEV)
+
 //Apertura y manejo de errores del server
-const SERVER = httpServer.listen(PORT,()=>{
+const SERVER = httpServer.listen(ARGS.port,()=>{
     console.log(`Servidor http escuchando en el puerto ${SERVER.address().port}`)
 })
 SERVER.on("error", error => console.log(`Error en servidor ${error}`))

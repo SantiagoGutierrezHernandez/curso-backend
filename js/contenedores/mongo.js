@@ -1,7 +1,8 @@
 const mongoose = require("mongoose")
 const {Contenedor } = require("./contenedor.js")
+const {mongoUrl} = require("../../options/config")
 
-const URL = "mongodb://localhost:27017/ecommerce"
+const URL = mongoUrl
 
 class ContenedorMongo extends Contenedor{
     _constructor({name,schema}){
