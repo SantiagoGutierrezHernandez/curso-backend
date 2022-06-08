@@ -18,10 +18,33 @@ const {mongoStoreUrl} = require("./options/config")
 const {fork} = require("child_process")
 const YARGS = require("yargs/yargs") (process.argv.slice(2))
 const ARGS = YARGS.default({
-    port : 8080
+    port : 8080,
+    mode : "FORK"
 }).argv
 
+const CLUSTER = require("cluster")
+const HTTP = require("http")
+const CPUs = require("os").cpus().length
+
 const APP = EXPRESS()
+
+// CLUSTERS
+if(ARGS.mode == "CLUSTER"){
+    if(CLUSTER.isPrimary){
+        for (let i = 0; i < CPUs; i++) {
+            CLUSTER.fork()
+        }
+        CLUSTER.on("exit", (worker, code, signal)=>{
+            console.log(`El worker ${worker.process.pid} murio.`)
+        })
+    }
+    else {
+        HTTP.createServer((req, res) =>{
+            res.writeHead(200)
+            res.end()
+        }).listen(ARGS.port)
+    }
+}
 
 /*AUTENTICACION*/
 const MIN_PASS_LEN = 8
@@ -251,7 +274,8 @@ ROUTER_DEV.get("/info", (req, res)=>{
         memory : process.memoryUsage(),
         path : __filename,
         pid : process.pid,
-        dir : process.cwd()
+        dir : process.cwd(),
+        CPUs : CPUs
     })
 })
 ROUTER_DEV.get("/randoms", (req,res)=>{
